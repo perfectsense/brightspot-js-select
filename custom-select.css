@@ -93,6 +93,14 @@
     padding: 5px;
 }
 
+.custom-select .custom-select-custom-menu ul li {
+
+
+
+    /* customizable */
+    height: 30px;
+}
+
 .custom-select .custom-select-custom-menu ul li:hover {
     cursor: pointer;
 

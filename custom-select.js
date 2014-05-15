@@ -20,7 +20,9 @@
             icons: {
                 "open":  "fa-chevron-down",
                 "close": "fa-chevron-up"
-            }
+            },
+
+            maxItems: null
 
         };
 
@@ -34,7 +36,7 @@
             }
 
             // skip IE8 & older, this looks exactly until <selevct> is clicked
-            // which for IE* & older just displays the browser default <option> menu
+            // which for IE8 & older just displays the browser default <option> menu
             if (document.all && !document.addEventListener) {
                 return false;
             }
@@ -74,6 +76,14 @@
 
             });
 
+            if (base.options.maxItems) {
+
+                var restricted_height = base.options.maxItems * parseInt(base.$menu_list.find("li").height(), 10);
+
+                base.$menu_list.height(restricted_height + "px").css({"overflow-y":"scroll"});
+
+            }
+
             base.$el.find("li").on("click", function() {
 
                 var $menu_item = $(this);
@@ -109,8 +119,6 @@
 
         base.add = function(_text, _value){
 
-            console.log("customSelect", "add", _text, _value);
-
             // for "no value" options
             if (typeof _value === "undefined") {
                 _value = _text;
@@ -125,8 +133,6 @@
                 .on("click", function() {
 
                     var $menu_item = $(this);
-
-                    //console.log( $menu_item, $menu_item.data("value"));
 
                     // set original select's value & trigger change event:
                     base.$el.find("select")
