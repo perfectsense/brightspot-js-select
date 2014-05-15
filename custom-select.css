@@ -1,0 +1,131 @@
+
+/*// custom-select.css*/
+
+.custom-select {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+
+    /* customizable */
+    width: 150px;
+    height: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* just for off the shelf font-awesome */
+.custom-select:before {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    pointer-events: none;
+}
+
+.custom-select .custom-select-wrapper {
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+
+
+    /* customizable */
+    width: 150px;
+}
+
+.custom-select select {
+    appearance: none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    text-overflow: ''; /* Firefox */
+    outline: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+
+
+    /* customizable */
+    padding: 5px 30px 5px 5px;
+    width: 140%;
+}
+
+.custom-select select::-ms-expand {
+    visibility: hidden;
+}
+
+.custom-select .custom-select-custom-menu {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    z-index: 1;
+    display: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+
+    /* customizable */
+    font-family: arial;
+    min-width: 150px;
+    font-size: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
+}
+.custom-select .custom-select-custom-menu ul,
+.custom-select .custom-select-custom-menu ul li {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+}
+
+.custom-select .custom-select-custom-menu ul li:hover {
+    cursor: pointer;
+
+
+    /* customizable */
+    background: #eaeaea;
+}
+
+.custom-select.open {
+
+    border-bottom: 0;
+
+
+    /* customizable */
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.custom-select.open .custom-select-custom-menu {
+
+    display: block;
+
+
+    /* customizable */
+    border-top: 1px thin #c0c0c0;
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}

@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}custom-select{% endblock %}
+
+{% block extra_head_content %}
+
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+    <script src="assets/script/vendor/detectmobilebrowser.js"></script>
+
+    <!-- the stuff you'll need starts here -->
+
+    <link href="custom-select.css" rel="stylesheet">
+    <script src="custom-select.js"></script>
+
+    <script>
+
+        $(document).on("ready", function() {
+
+            $("select").on("change", function() {
+
+                console.log( "this select changed:", $(this).val() );
+
+            });
+
+            $(".custom-select-with-js").customSelect({"debug":true});
+
+        });
+
+        // just for the adder demo:
+
+        $(document).on("ready", function() {
+
+            var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
+
+            var $adder = $("form[name='adder']");
+
+                $adder.on("submit", function(e) {
+
+                    e.preventDefault();
+
+                    $customSelectAdderDemo.add( $adder.find('[name="_text"]').val(), $adder.find('[name="_value"]').val() );
+
+                });
+
+        });
+
+        // just for the replace demo:
+
+        $(document).on("ready", function() {
+
+            var $customSelectReplaceDemo = $(".custom-select-replace-demo").customSelect().data("customSelect");
+
+            $("a.replaceDemo").on("click", function(e) {
+
+                e.preventDefault();
+
+                $customSelectReplaceDemo.replaceOptions(
+                    [{
+                        "_value" : "America/Puerto_Rico",
+                        "_text"  : "Puerto Rico (Atlantic)"
+                    }, {
+                        "_value" : "Pacific/Honolulu",
+                        "_text"  : "Honolulu (Hawaii)"
+                    }]
+                );
+
+            });
+
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block article %}
+
+
+    <div class="homepage-grid custom-selects">
+
+        <div class="row">
+            <div class="col col-md-4">
+
+                <div>
+
+                    <h4>What's this?</h4>
+
+                    <p>A jQuery plugin so that &lt;select&gt; element doesn't have to look like a &lt;select&gt; element, unless you're on IE8 or older.</p>
+
+                    <p>And if you're on a mobile device, you're &lt;select&gt; looks the way you want but behaves like a browser's standard &lt;select&gt;.</p>
+
+                </div>
+
+            </div>
+            <div class="col col-md-4">
+
+                <div>
+
+                    <h4>Notes:</h4>
+
+                    <ul>
+                        <li>The CSS provided is just an example, but some rules are required</li>
+                        <li>The JavaScript is intended to pass events through to the custom UI</li>
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col col-md-4">
+
+                <div>
+
+                    <h4>To do:</h4>
+
+                    <ul>
+                        <li>add large set of <option>s example</li>
+                        <li>add use case for custom select that adjusts when too close to the edge of a window</li>
+                        <li>update to use bsp utils' pattern</li>
+                        <li>generate CSS from a Less file</li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-6">
+
+                <h2>no js</h2>
+
+                <span class="custom-select fa fa-chevron-down">
+                    <span class="custom-select-wrapper">
+                        <select>
+                            <option value="value1">Option One</option>
+                            <option value="value2">option Two is longer</option>
+                            <option value="value3">option 3</option>
+                            <option value="value4">option 4</option>
+                            <option value="value5">option 5</option>
+                            <option value="value6">option 6</option>
+                        </select>
+                    </span>
+                </span>
+
+            </div>
+            <div class="col col-md-6">
+
+                <h2>js</h2>
+
+                <span class="custom-select custom-select-with-js fa fa-chevron-down">
+                    <span class="custom-select-wrapper">
+                        <select>
+                            <option value="value1">Option One</option>
+                            <option value="value2">option Two is longer</option>
+                            <option value="value3">option 3</option>
+                            <!-- test an option w/out a value -->
+                            <option>option 4</option>
+                            <option value="value5">option 5</option>
+                            <option value="value6">option 6</option>
+                        </select>
+                    </span>
+                </span>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+
+                <h2>js, add an option demo</h2>
+
+                <span class="custom-select custom-select-adder-demo fa fa-chevron-down">
+                    <span class="custom-select-wrapper">
+                        <select>
+                            <option value="value1">Option 1</option>
+                            <option value="value2">option 2</option>
+                            <option value="value3">option 3</option>
+                            <option value="value4">option 4</option>
+                            <option value="value5">option 5</option>
+                            <option value="value6">option 6</option>
+                        </select>
+                    </span>
+                </span>
+
+            </div>
+            <div class="col col-md-8">
+
+                <form name="adder">
+                    <input placeholder="text, required" name="_text">
+                    <input placeholder="value, optional" name="_value">
+                    <input type="submit" value="add an option" class="btn">
+                </form>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+
+                <h2>js, replace options demo</h2>
+
+                <span class="custom-select custom-select-replace-demo fa fa-chevron-down">
+                    <span class="custom-select-wrapper">
+                        <select>
+                            <option value="value1">Option 1</option>
+                            <option value="value2">option 2</option>
+                            <option value="value3">option 3</option>
+                            <option value="value4">option 4</option>
+                            <option value="value5">option 5</option>
+                            <option value="value6">option 6</option>
+                        </select>
+                    </span>
+                </span>
+
+                <hr>
+
+                <a href="javascript:;" class="replaceDemo">Replace options</a> with ones to the right:
+
+            </div>
+            <div class="col col-md-8">
+
+                <pre>
+                <code>
+
+                    [{
+                        "_value" : "America/Puerto_Rico",
+                        "_text"  : "Puerto Rico (Atlantic)"
+                    }, {
+                        "_value" : "Pacific/Honolulu",
+                        "_text"  : "Honolulu (Hawaii)"
+                    }]
+
+                </code>
+                </pre>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
