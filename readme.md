@@ -23,7 +23,10 @@ Look at the HTML & CSS & JS; then instantiate the custom-select plugin ...
                 "open":  "fa-chevron-down",
                 "close": "fa-chevron-up"
             },
-            maxItems: null
+            maxItems: null,
+            openClassName: "open",
+            openUpwardClassName: "open-upward",
+            forceUpward: false
         }
 
 "open" & "close" are for CSS classNames that get used to indicate the open or closed state of the dropdown.

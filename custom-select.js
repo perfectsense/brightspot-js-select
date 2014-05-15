@@ -22,7 +22,11 @@
                 "close": "fa-chevron-up"
             },
 
-            maxItems: null
+            maxItems: null,
+
+            openClassName: "open",
+            openUpwardClassName: "open-upward",
+            forceUpward: false
 
         };
 
@@ -101,8 +105,10 @@
 
         base.closeCustomSelect = function(target){
 
+            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
+
             $(target)
-                .removeClass("open")
+                .removeClass( _open )
                 .addClass( base.options.icons.open )
                 .removeClass( base.options.icons.close );
 
@@ -110,10 +116,16 @@
 
         base.toggleCustomSelect = function(){
 
+            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
+
             base.$el
-                .toggleClass("open")
+                .toggleClass( _open )
                 .toggleClass( base.options.icons.open )
                 .toggleClass( base.options.icons.close );
+
+            if (base.$el.hasClass(base.options.openUpwardClassName)) {
+                base.$menu_list.css({"top": "-" + base.$menu_list.height() + "px" });
+            }
 
         };
 
