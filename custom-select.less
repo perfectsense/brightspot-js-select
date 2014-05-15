@@ -1,0 +1,136 @@
+
+// this generates custom-select.css
+//
+// all of the mixins depend on lesshat.less!!
+// ... you could omit this as long as you have
+// all of the mixins covered
+
+@import "assets/style/vendor/lesshat.less";
+
+.custom-select {
+
+    @width: 150px;
+    @backgroundColor: #fff;
+    @hoverItemBackgroundColor: #eaeaea;
+    @seperatorBorderColor: #c0c0c0;
+    @borderColor: #ccc; // if not wanted use transparent as color!
+    @borderRadius: 6px;
+
+    /*
+
+    it's safe to customize "customizable" sections below,
+    but try to use the Less vars above ...
+
+    */
+
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: @width;
+    height: 100%;
+    border: 1px solid @borderColor;
+    .border-radius( @borderRadius );
+    .box-sizing( 'border-box' );
+
+    /* just for off the shelf font-awesome */
+    &:before {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        pointer-events: none;
+    }
+
+    .custom-select-wrapper {
+        display: inline-block;
+        height: 100%;
+        overflow: hidden;
+        width: @width;
+    }
+
+    select {
+        .appearance( none );
+        text-overflow: ''; /* Firefox */
+        outline: 0;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+
+        /* customizable */
+        padding: 5px 30px 5px 5px;
+        width: 140%;
+    }
+
+    select::-ms-expand {
+        visibility: hidden;
+    }
+
+    .custom-select-custom-menu {
+        position: absolute;
+        top: 100%;
+        left: -1px;
+        z-index: 1;
+        display: none;
+        float: left;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+        background-color: @backgroundColor;
+        border: 1px solid @borderColor;
+        .border-radius( @borderRadius );
+        .box-sizing( 'border-box' );
+
+        /* customizable */
+        font-family: arial;
+        font-size: 15px;
+        min-width: @width;
+
+    }
+    .custom-select-custom-menu ul,
+    .custom-select-custom-menu ul li {
+        list-style: none;
+        margin: 0;
+        padding: 5px;
+    }
+
+    .custom-select-custom-menu ul li {
+
+        /* customizable */
+        height: 30px;
+    }
+
+    .custom-select-custom-menu ul li:hover {
+        cursor: pointer;
+        background: @hoverItemBackgroundColor;
+    }
+
+    &.open {
+        border-bottom: 0;
+        .border-bottom-right-radius(0);
+        .border-bottom-left-radius(0);
+    }
+
+    &.open .custom-select-custom-menu {
+        display: block;
+        border-top: 1px thin @seperatorBorderColor;
+        .border-top-right-radius(0);
+        .border-top-left-radius(0);
+        .box-shadow(~"0 6px 12px rgba(0,0,0,.175)");
+    }
+
+    &.open-upward {
+        border-top: 0;
+        .border-top-right-radius(0);
+        .border-top-left-radius(0);
+    }
+
+    &.open-upward .custom-select-custom-menu {
+        display: block;
+        border-bottom: 1px thin @seperatorBorderColor;
+        .border-bottom-right-radius(0);
+        .border-bottom-left-radius(0);
+        //.box-shadow(~"0 6px -12px rgba(0,0,0,.175)");
+    }
+
+}

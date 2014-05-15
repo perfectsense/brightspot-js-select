@@ -26,7 +26,8 @@ module.exports = function (grunt) {
                     cleancss: true
                 },
                 files: {
-                    "./assets/style/dist/main.css": "./assets/style/main.less"
+                    "./assets/style/dist/main.css": "./assets/style/main.less",
+                    "./custom-select.css": "./custom-select.less",
                 }
             }
         },

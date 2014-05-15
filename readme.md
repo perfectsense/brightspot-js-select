@@ -9,9 +9,13 @@ CSS provided has optional rules & required rules (this needs to be specified).
 
 ## Getting started
 
-Look at the HTML & CSS & JS; then instantiate the custom-select plugin ...
+Look at the HTML & CSS & JS ...
+
+This is the most basic implementation:
 
     $(".custom-select").customSelect();
+
+Modifying the look & feel just requires updating some vars in custom-select.less
 
 ------------------------------------------------------------------------------------------------------------------------------
 
