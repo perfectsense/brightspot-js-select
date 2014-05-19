@@ -22,6 +22,7 @@
                 "close": "fa-chevron-up"
             },
 
+            // if set, once maxItems is exceeded scrolling kicks in
             maxItems: null,
 
             openClassName: "open",
@@ -69,14 +70,24 @@
             base.$options.each(function(i, option) {
 
                 var _text = $(option).text(),
-                    _value = $(option).attr("value");
+                    _value = $(option).attr("value"),
+                    _selected = $(option).attr("selected");
+
+                console.log(_selected);
 
                 // for "no value" options
                 if (typeof _value === "undefined") {
                     _value = _text;
                 }
 
-                base.$menu_list.find("ul").append("<li data-value='"+_value+"'>"+_text+"</li>");
+                // for "selected" options
+                if (typeof _selected !== "undefined") {
+                    _selected = "data-selected='selected'";
+                } else {
+                    _selected = "";
+                }
+
+                base.$menu_list.find("ul").append("<li data-value='"+_value+"' "+_selected+">"+_text+"</li>");
 
             });
 

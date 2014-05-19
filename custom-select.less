@@ -96,13 +96,13 @@
 
     .custom-select-custom-menu ul li {
 
+        &:hover,
+        &[data-selected] {
+            background: @hoverItemBackgroundColor;
+        }
+
         /* customizable */
         height: 30px;
-    }
-
-    .custom-select-custom-menu ul li:hover {
-        cursor: pointer;
-        background: @hoverItemBackgroundColor;
     }
 
     &.open {
