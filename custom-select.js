@@ -17,6 +17,8 @@
 
             debug: false,
 
+            prefix: "custom-select-",
+
             icons: {
                 "open":  "fa-chevron-down",
                 "close": "fa-chevron-up"
@@ -48,8 +50,8 @@
 
             base.options = $.extend({}, base.defaultOptions, options);
 
-            base.$el.append("<div class='custom-select-custom-menu'><ul></ul></div>");
-            base.$menu_list = base.$el.find(".custom-select-custom-menu");
+            base.$el.append("<div class='"+base.options.prefix+"custom-menu'><ul></ul></div>");
+            base.$menu_list = base.$el.find("."+base.options.prefix+"custom-menu");
 
             base.$el.on("click", function(event) {
 
@@ -101,8 +103,12 @@
 
                 var $menu_item = $(this);
 
+                // update data-selected
+                base.$menu_list.find("li").removeAttr("data-selected");
+                $menu_item.attr("data-selected", "selected")
+
                 // set original select's value & trigger change event:
-                base.$select.val( $menu_item.data("value") ).trigger("change");
+                base.$select.val( $menu_item.data("value") ).attr("selected","selected").trigger("change");
 
                 if (base.options.debug) {
                     console.log("menu item clicked", $menu_item.data("value") );
@@ -112,11 +118,11 @@
 
         };
 
-        base.closeCustomSelect = function(target){
+        base.closeCustomSelects = function(){
 
             var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
 
-            $(target)
+            $(base.el)
                 .removeClass( _open )
                 .addClass( base.options.icons.open )
                 .removeClass( base.options.icons.close );
@@ -195,7 +201,7 @@
             $(document).on("click", function() {
 
                 // close them all
-                base.closeCustomSelect( base.el );
+                base.closeCustomSelects();
 
             });
 
