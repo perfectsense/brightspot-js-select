@@ -73,8 +73,6 @@
                     _value = $(option).attr("value"),
                     _selected = $(option).attr("selected");
 
-                console.log(_selected);
-
                 // for "no value" options
                 if (typeof _value === "undefined") {
                     _value = _text;
