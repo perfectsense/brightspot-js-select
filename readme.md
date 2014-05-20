@@ -49,7 +49,9 @@ There are also some public methods you can access, for example to be able to add
 
     var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
 
-    $customSelectAdderDemo.add( $adder.find('[name="_text"]').val(), $adder.find('[name="_value"]').val() );
+    $customSelectAdderDemo.add( "some text", "some-value" );
+    
+(The value argument, the 2nd one, is optional, just like the value attribute on an <option> element.)
 
 ### .replaceOptions
 
