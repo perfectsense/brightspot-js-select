@@ -45,17 +45,17 @@ The sample files use classes that correspond to Font Awesome.
 
 ### .add
 
-There are also some public methods you can access, for example to be able to add arbitrary <option>s, use the `.add` method:
+There are also some public methods you can access, for example to be able to add arbitrary &lt;option&gt;s, use the `.add` method:
 
     var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
 
     $customSelectAdderDemo.add( "some text", "some-value" );
     
-(The value argument, the 2nd one, is optional, just like the value attribute on an <option> element.)
+(The value argument, the 2nd one, is optional, just like the value attribute on an &lt;option&gt; element.)
 
 ### .replaceOptions
 
-To be able to replace all <option>s, use the `.replaceOptions` method:
+To be able to replace all &lt;option&gt;s, use the `.replaceOptions` method:
 
     var $customSelectReplaceDemo = $(".custom-select-replace-demo").customSelect().data("customSelect");
 
