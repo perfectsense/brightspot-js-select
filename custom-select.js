@@ -89,11 +89,22 @@
 
             });
 
+            if (base.currentSelectionIndex === 0) {
+                base.$menu_list.find("li").eq(0).attr("data-selected", "selected");
+            }
+
             if (base.options.maxItems) {
 
-                var restricted_height = base.options.maxItems * parseInt(base.$menu_list.find("li").height(), 10);
+                base.item_height =  base.$menu_list.find("li").outerHeight();
 
-                base.$menu_list.height(restricted_height + "px").css({"overflow-y":"scroll"});
+                base.restricted_height = base.options.maxItems * base.item_height;
+
+                base.$menu_list.height(base.restricted_height + "px").css({"overflow-y":"scroll"});
+
+                // base.restricted_height += parseInt(base.$menu_list.css("border-width"), 10);
+                // //base.restricted_height += parseInt(base.$menu_list.css("border-width-bottom"), 10);
+
+                // console.log("base.restricted_height", base.restricted_height);
 
             }
 
@@ -145,8 +156,18 @@
             }
 
             base.$el.find("li").removeAttr("data-selected");
-
             base.$el.find("li").eq( _index ).attr("data-selected", "selected");
+
+            // handle options that are not visible in the dropdown
+            if (base.options.maxItems !== null) {
+                if (base.currentSelectionIndex + 1 > base.options.maxItems) {
+                    var adjust_top = (base.currentSelectionIndex + 1 - base.options.maxItems) * base.item_height;
+                    adjust_top = "-" + adjust_top + "px";
+                } else {
+                    adjust_top = "0px";
+                }
+                base.$menu_list.find("ul").css({"top": adjust_top });
+            }
 
         };
 
@@ -274,7 +295,7 @@
                     base.closeCustomSelects();
 
                 })
-                .keydown(function(event) {
+                .on("keydown", function(event) {
 
                     var key = event.which;
 
