@@ -83,6 +83,8 @@
                     _selected = "";
                 }
 
+                base.currentSelectionIndex = base.$menu_list.find("li[data-selected]").index() || 0;
+
                 base.$menu_list.find("ul").append("<li data-value='"+_value+"' "+_selected+">"+_text+"</li>");
 
             });
@@ -101,32 +103,74 @@
 
                 // update data-selected
                 base.$menu_list.find("li").removeAttr("data-selected");
-                $menu_item.attr("data-selected", "selected")
+
+                $menu_item.attr("data-selected", "selected");
 
                 // set original select's value & trigger change event:
                 base.$select.val( $menu_item.data("value") ).attr("selected","selected").trigger("change");
 
+                // track index of currently selected item
+                base.currentSelectionIndex = base.$menu_list.find("li[data-selected]").index();
+
+                // after a selection close the dropdown
+                base.closeCustomSelects();
+
                 if (base.options.debug) {
-                    console.log("menu item clicked", $menu_item.data("value") );
+                    console.log("menu item clicked", $menu_item.data("value"), base.currentSelectionIndex );
                 }
 
             });
 
         };
 
-        base.selectPreviousOption = function(){
+        base.not_open = function() {
+            // return true if the select doesn't have either open or openUpward classes
+            return base.$el.hasClass( base.options._open ) ? false : true;
+        }
 
-            if (! base.$el.hasClass( base.options._open )) return false;
+        base.selectOption = function(){
 
-            console.log("selectPreviousOption");
+            if (base.not_open()) {
+                return false;
+            }
+
+            base.$el.find("li[data-selected]").trigger("click");
 
         };
 
-        base.selectNextOption = function(){
+        base.highlightOption = function(_index){
 
-            if (! base.$el.hasClass( base.options._open )) return false;
+            if (base.not_open()) {
+                return false;
+            }
 
-            console.log("selectNextOption");
+            base.$el.find("li").removeAttr("data-selected");
+
+            base.$el.find("li").eq( _index ).attr("data-selected", "selected");
+
+        };
+
+        base.highlightPreviousOption = function(){
+
+            if (base.not_open()) {
+                return false;
+            }
+
+            base.currentSelectionIndex = Math.max(base.currentSelectionIndex - 1, 0);
+
+            base.highlightOption( base.currentSelectionIndex );
+
+        };
+
+        base.highlightNextOption = function(){
+
+            if (base.not_open()) {
+                return false;
+            }
+
+            base.currentSelectionIndex = Math.min(base.currentSelectionIndex + 1, base.$el.find("li").length - 1);
+
+            base.highlightOption( base.currentSelectionIndex );
 
         };
 
@@ -144,7 +188,7 @@
             event.preventDefault();
 
             // if the dropdown needs to open
-            if (! base.$el.hasClass( base.options._open )) {
+            if (base.not_open()) {
 
                 $(document).trigger("click");
 
@@ -232,41 +276,42 @@
                 })
                 .keydown(function(event) {
 
-                    var key = event.which, _up = _down = _escape = _enter = false;
+                    var key = event.which;
 
                     if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
 
+                        // UP ARROW
                         if (key == 38) {
-                            _up = true;
 
-                            base.selectPreviousOption();
+                            base.highlightPreviousOption();
 
                             return false;
                         }
 
+                        // DOWN ARROW
                         if (key == 40) {
-                            _down = true;
 
-                            base.selectNextOption();
+                            base.highlightNextOption();
 
                             return false;
                         }
 
+                        // ESCAPE
                         if (key == 27) {
-                            _escape = true;
 
-                            // should this revert to the originally selected option???
-
-                            // close this select, aka close them all
+                            // close select(s)
                             base.closeCustomSelects();
 
                             return false;
                         }
 
+                        // ENTER
                         if (key == 13) {
-                            _enter = true;
 
-                            // close this select, aka close them all
+                            // select highlighted option
+                            base.selectOption();
+
+                            // close select(s)
                             base.closeCustomSelects();
 
                             return false;
