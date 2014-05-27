@@ -101,11 +101,6 @@
 
                 base.$menu_list.height(base.restricted_height + "px").css({"overflow-y":"scroll"});
 
-                // base.restricted_height += parseInt(base.$menu_list.css("border-width"), 10);
-                // //base.restricted_height += parseInt(base.$menu_list.css("border-width-bottom"), 10);
-
-                // console.log("base.restricted_height", base.restricted_height);
-
             }
 
             base.$el.find("li").on("click", function() {
@@ -211,10 +206,12 @@
             // if the dropdown needs to open
             if (base.not_open()) {
 
+                // close open dropdowns
                 $(document).trigger("click");
 
                 event.stopPropagation();
 
+                // open this one
                 base.$el
                     .addClass( base.options._open )
                     .removeClass( base.options.icons.open )
@@ -223,7 +220,8 @@
             // if the dropdown needs to close
             } else {
 
-                base.closeCustomSelects();
+                // close open dropdowns
+                $(document).trigger("click");
 
             }
 
@@ -302,7 +300,7 @@
                     if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
 
                         // UP ARROW
-                        if (key == 38) {
+                        if (key === 38) {
 
                             base.highlightPreviousOption();
 
@@ -310,7 +308,7 @@
                         }
 
                         // DOWN ARROW
-                        if (key == 40) {
+                        if (key === 40) {
 
                             base.highlightNextOption();
 
@@ -318,7 +316,7 @@
                         }
 
                         // ESCAPE
-                        if (key == 27) {
+                        if (key === 27) {
 
                             // close select(s)
                             base.closeCustomSelects();
@@ -327,7 +325,7 @@
                         }
 
                         // ENTER
-                        if (key == 13) {
+                        if (key === 13) {
 
                             // select highlighted option
                             base.selectOption();
