@@ -12,6 +12,7 @@
     @width: 150px;
     @backgroundColor: #fff;
     @hoverItemBackgroundColor: #eaeaea;
+    @hoverAndSelectedItemBackgroundColor: #c0c0c0;
     @seperatorBorderColor: #c0c0c0;
     @borderColor: #ccc; // if not wanted use transparent as color!
     @borderRadius: 6px;
@@ -105,6 +106,10 @@
         &:hover,
         &[data-selected] {
             background: @hoverItemBackgroundColor;
+        }
+
+        &[data-selected]:hover {
+            background: @hoverAndSelectedItemBackgroundColor;
         }
 
         /* customizable */
