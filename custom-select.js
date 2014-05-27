@@ -131,6 +131,9 @@
 
         base.toggleCustomSelect = function(){
 
+            // close any open custom selects
+            $(document).trigger("click");
+
             var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
 
             base.$el
