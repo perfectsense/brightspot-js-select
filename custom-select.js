@@ -50,6 +50,9 @@
 
             base.options = $.extend({}, base.defaultOptions, options);
 
+            // _open is an "alias" to open or openUpward
+            base.options._open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
+
             base.$el.append("<div class='"+base.options.prefix+"custom-menu'><ul></ul></div>");
             base.$menu_list = base.$el.find("."+base.options.prefix+"custom-menu");
 
@@ -113,18 +116,15 @@
 
         base.selectPreviousOption = function(){
 
-            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
-
-            if (! base.$el.hasClass( _open )) return false;
+            if (! base.$el.hasClass( base.options._open )) return false;
 
             console.log("selectPreviousOption");
 
         };
 
         base.selectNextOption = function(){
-            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
 
-            if (! base.$el.hasClass( _open )) return false;
+            if (! base.$el.hasClass( base.options._open )) return false;
 
             console.log("selectNextOption");
 
@@ -132,10 +132,8 @@
 
         base.closeCustomSelects = function(){
 
-            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
-
             $(base.el)
-                .removeClass( _open )
+                .removeClass( base.options._open )
                 .addClass( base.options.icons.open )
                 .removeClass( base.options.icons.close );
 
@@ -145,17 +143,15 @@
 
             event.preventDefault();
 
-            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
-
             // if the dropdown needs to open
-            if (! base.$el.hasClass( _open )) {
+            if (! base.$el.hasClass( base.options._open )) {
 
                 $(document).trigger("click");
 
                 event.stopPropagation();
 
                 base.$el
-                    .addClass( _open )
+                    .addClass( base.options._open )
                     .removeClass( base.options.icons.open )
                     .addClass( base.options.icons.close );
 
