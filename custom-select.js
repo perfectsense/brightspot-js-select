@@ -118,6 +118,25 @@
 
         };
 
+        base.selectPreviousOption = function(){
+
+            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
+
+            if (! base.$el.hasClass( _open )) return false;
+
+            console.log("selectPreviousOption");
+
+        };
+
+        base.selectNextOption = function(){
+            var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
+
+            if (! base.$el.hasClass( _open )) return false;
+
+            console.log("selectNextOption");
+
+        };
+
         base.closeCustomSelects = function(){
 
             var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
@@ -136,10 +155,17 @@
 
             var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
 
-            base.$el
-                .toggleClass( _open )
-                .toggleClass( base.options.icons.open )
-                .toggleClass( base.options.icons.close );
+            if (! base.$el.hasClass( _open )) {
+                base.$el
+                    .addClass( _open )
+                    .removeClass( base.options.icons.open )
+                    .addClass( base.options.icons.close );
+            } else {
+
+                console.log("try to close just this");
+
+                base.closeCustomSelects();
+            }
 
             if (base.$el.hasClass(base.options.openUpwardClassName)) {
                 base.$menu_list.css({"top": "-" + base.$menu_list.height() + "px" });
@@ -201,13 +227,59 @@
         // js that needs to run once
 
             // dismiss select on "blur"
-            $(document).on("click", function() {
+            $(document)
+                .on("click", function() {
 
-                // close them all
-                base.closeCustomSelects();
+                    // close them all
+                    base.closeCustomSelects();
 
-            });
+                })
+                .keydown(function(event) {
 
+                    var key = event.which, _up = _down = _escape = _enter = false;
+
+                    if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
+
+                        if (key == 38) {
+                            _up = true;
+
+                            base.selectPreviousOption();
+
+                            return false;
+                        }
+
+                        if (key == 40) {
+                            _down = true;
+
+                            base.selectNextOption();
+
+                            return false;
+                        }
+
+                        if (key == 27) {
+                            _escape = true;
+
+                            // should this revert to the originally selected option???
+
+                            // close this select, aka close them all
+                            base.closeCustomSelects();
+
+                            return false;
+                        }
+
+                        if (key == 13) {
+                            _enter = true;
+
+                            // close this select, aka close them all
+                            base.closeCustomSelects();
+
+                            return false;
+                        }
+
+                    }
+
+                    return true;
+                });
 
     };
 
