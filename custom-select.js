@@ -54,19 +54,12 @@
             base.$menu_list = base.$el.find("."+base.options.prefix+"custom-menu");
 
             base.$el.on("click", function(event) {
-
                 event.stopPropagation();
                 event.preventDefault();
-
             });
 
             base.$select.on("focus mousedown", function(event) {
-
-                event.stopPropagation();
-                event.preventDefault();
-
                 base.toggleCustomSelect();
-
             });
 
             base.$options.each(function(i, option) {
@@ -150,23 +143,30 @@
 
         base.toggleCustomSelect = function(){
 
-            // close any open custom selects
-            $(document).trigger("click");
+            event.preventDefault();
 
             var _open = (base.options.forceUpward ? base.options.openUpwardClassName : base.options.openClassName);
 
+            // if the dropdown needs to open
             if (! base.$el.hasClass( _open )) {
+
+                $(document).trigger("click");
+
+                event.stopPropagation();
+
                 base.$el
                     .addClass( _open )
                     .removeClass( base.options.icons.open )
                     .addClass( base.options.icons.close );
+
+            // if the dropdown needs to close
             } else {
 
-                console.log("try to close just this");
-
                 base.closeCustomSelects();
+
             }
 
+            // if the dropdown needs to open upward
             if (base.$el.hasClass(base.options.openUpwardClassName)) {
                 base.$menu_list.css({"top": "-" + base.$menu_list.height() + "px" });
             }
