@@ -285,15 +285,18 @@
 
         // js that needs to run once
 
-            // dismiss select on "blur"
             $(document)
                 .on("click", function() {
+
+                    // dismiss select on "blur"
 
                     // close them all
                     base.closeCustomSelects();
 
                 })
                 .on("keydown", function(event) {
+
+                    // handle keybindings comparable to <select>
 
                     var key = event.which;
 
