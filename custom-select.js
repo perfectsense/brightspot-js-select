@@ -42,8 +42,9 @@
                 return false;
             }
 
-            // skip IE8 & older, this looks exactly until <selevct> is clicked
-            // which for IE8 & older just displays the browser default <option> menu
+            // skip IE8 & older, this still looks the same
+            // until you click at which point upu see the default
+            // browser select menu
             if (document.all && !document.addEventListener) {
                 return false;
             }
