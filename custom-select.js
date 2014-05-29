@@ -133,7 +133,7 @@
         base.not_open = function() {
             // return true if the select doesn't have either open or openUpward classes
             return base.$el.hasClass( base.options._open ) ? false : true;
-        }
+        };
 
         base.selectOption = function(){
 
