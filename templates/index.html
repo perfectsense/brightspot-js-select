@@ -1,25 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-    <title>custom-select</title>
+{% block title %}custom-select{% endblock %}
 
-    
-    <link rel="stylesheet" href="assets/style/dist/main.css">
-    
-
-    
-    <script type="text/javascript" src="assets/script/dist/main.min.js"></script>
-    
-
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    
-
-    
-    
-
-    
+{% block extra_head_content %}
 
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
@@ -27,171 +10,70 @@
 
     <!-- the stuff you'll need starts here -->
 
-    <link href="custom-select.css" rel="stylesheet">
-    <script src="custom-select.js"></script>
+    <link href="bsp-select.css" rel="stylesheet">
+    <script src="bower_components/bsp-utils/bsp-utils.js"></script>
+    <script src="bsp-select.js"></script>
 
     <script>
 
         $(document).on("ready", function() {
 
             $("select").on("change", function() {
-
                 console.log( "this select changed:", $(this).val() );
-
             });
 
-            $(".custom-select-with-js").customSelect({"debug":true});
-
-        });
-
-        // just for the adder demo:
-
-        $(document).on("ready", function() {
-
-            var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
-
-            var $adder = $("form[name='adder']");
-
-                $adder.on("submit", function(e) {
-
-                    e.preventDefault();
-
-                    $customSelectAdderDemo.add( $adder.find('[name="_text"]').val(), $adder.find('[name="_value"]').val() );
-
-                });
-
-        });
-
-        // just for the replace demo:
-
-        $(document).on("ready", function() {
-
-            var $customSelectReplaceDemo = $(".custom-select-replace-demo").customSelect().data("customSelect");
-
-            $("a.replaceDemo").on("click", function(e) {
-
-                e.preventDefault();
-
-                $customSelectReplaceDemo.replaceOptions(
-                    [{
-                        "_value" : "America/Puerto_Rico",
-                        "_text"  : "Puerto Rico (Atlantic)"
-                    }, {
-                        "_value" : "Pacific/Honolulu",
-                        "_text"  : "Honolulu (Hawaii)"
-                    }]
-                );
-
+            bsp_select.live(document, ".custom-select-with-js", {
+                'debug': true
             });
 
         });
+
+        // // just for the replace demo:
+
+        // $(document).on("ready", function() {
+
+        //     var $customSelectReplaceDemo = $(".custom-select-replace-demo").customSelect().data("customSelect");
+
+        //     $("a.replaceDemo").on("click", function(e) {
+
+        //         e.preventDefault();
+
+        //         $customSelectReplaceDemo.replaceOptions(
+        //             [{
+        //                 "_value" : "America/Puerto_Rico",
+        //                 "_text"  : "Puerto Rico (Atlantic)"
+        //             }, {
+        //                 "_value" : "Pacific/Honolulu",
+        //                 "_text"  : "Honolulu (Hawaii)"
+        //             }]
+        //         );
+
+        //     });
+
+        // });
 
         // just for the states demo:
 
         $(document).on("ready", function() {
 
-            $(".custom-select-states").customSelect({"maxItems": 3});
+            bsp_select.live(document, ".custom-select-states", {
+                "maxItems": 3
+            });
 
-            $(".custom-select-states-upward").customSelect({"maxItems": 5, "forceUpward": true});
+            bsp_select.live(document, ".custom-select-states-upward", {
+                "maxItems": 5,
+                "forceUpward": true
+            });
 
         });
 
     </script>
 
+{% endblock %}
 
-
-</head>
-<body>
-
-
-
-<header class="container">
-
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand brand">custom-select</a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-
-                        <!-- sample dropdown here?? -->
-
-                    </li>
-                </ul>
-
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-
-    </nav>
-
-</header>
-
-
-
-
-<article class="container">
-
-
+{% block article %}
 
     <div class="homepage-grid custom-selects">
-
-        <div class="row">
-            <div class="col col-md-4">
-
-                <div>
-
-                    <h4>What's this?</h4>
-
-                    <p>A jQuery plugin so that &lt;select&gt; element doesn't have to look like a &lt;select&gt; element, unless you're on IE8 or older.</p>
-
-                    <p>And if you're on a mobile device, you're &lt;select&gt; looks the way you want but behaves like a browser's standard &lt;select&gt;.</p>
-
-                </div>
-
-            </div>
-            <div class="col col-md-4">
-
-                <div>
-
-                    <h4>Notes:</h4>
-
-                    <ul>
-                        <li>Use custom-select.less to customize the look &amp; feel!!</li>
-                        <li>The JavaScript is intended to pass events through to the custom UI</li>
-                    </ul>
-
-                </div>
-
-            </div>
-            <div class="col col-md-4">
-
-                <div>
-
-                    <h4>To do:</h4>
-
-                    <ul>
-                        <li>add use case for custom select that adjusts when too close to the edge of a window</li>
-                        <li>update to use bsp utils' pattern</li>
-                        <li>focus / accessibility / tabindex</li>
-                        <li>responsive maxItems</li>
-                        <li>autoselect based on letters typed</li>
-                    </ul>
-
-                </div>
-
-            </div>
-        </div>
 
         <div class="row">
             <div class="col col-md-6">
@@ -244,7 +126,6 @@
                             <option value="value1">Option One</option>
                             <option value="value2">option Two is longer</option>
                             <option value="value3" selected>option 3</option>
-                            <!-- test an option w/out a value -->
                             <option>option 4</option>
                             <option value="value5">option 5</option>
                             <option value="value6">option 6</option>
@@ -263,7 +144,6 @@
                             <option value="value1">Option One</option>
                             <option value="value2">option Two is longer</option>
                             <option value="value3">option 3</option>
-                            <!-- test an option w/out a value -->
                             <option selected="selected">option 4</option>
                             <option value="value5">option 5</option>
                             <option value="value6">option 6</option>
@@ -274,35 +154,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col col-md-4">
-
-                <h2>js, add an option demo</h2>
-
-                <span class="custom-select custom-select-adder-demo fa fa-chevron-down">
-                    <span class="custom-select-wrapper">
-                        <select>
-                            <option value="value1">Option 1</option>
-                            <option value="value2">option 2</option>
-                            <option value="value3">option 3</option>
-                            <option value="value4">option 4</option>
-                            <option value="value5">option 5</option>
-                            <option value="value6">option 6</option>
-                        </select>
-                    </span>
-                </span>
-
-            </div>
-            <div class="col col-md-8">
-
-                <form name="adder">
-                    <input placeholder="text, required" name="_text">
-                    <input placeholder="value, optional" name="_value">
-                    <input type="submit" value="add an option" class="btn">
-                </form>
-
-            </div>
-        </div>
+    <!--
 
         <div class="row">
             <div class="col col-md-4">
@@ -345,6 +197,8 @@
 
             </div>
         </div>
+
+    -->
 
         <div class="row">
             <div class="col col-md-6">
@@ -475,35 +329,5 @@
 
     </div>
 
-
-
-</article><!-- article class="container" -->
-
-
-
-<footer class="container">
-
-    <div class="row">
-        <div class="col col-md-6">
-
-            <a class="footer-brand brand">custom-select</a>
-
-        </div>
-        <div class="col col-md-4 align-right">
-
-            ...other side of the footer.
-
-        </div>
-    </div>
-
-</footer>
-
-
-
-
-
-
-
-</body>
-</html>
+{% endblock %}
 

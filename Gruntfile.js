@@ -27,7 +27,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     "./assets/style/dist/main.css": "./assets/style/main.less",
-                    "./custom-select.css": "./custom-select.less",
+                    "./bsp-select.css": "./bsp-select.less",
                 }
             }
         },
@@ -56,9 +56,6 @@ module.exports = function (grunt) {
             main: {
                 src: [
                     './assets/script/vendor/jquery-1.11.0.js',
-                    //'./assets/script/vendor/bootstrap.js',
-                    //'./assets/script/vendor/owl.carousel.js',
-	                //'./assets/script/vendor/rrssb.js',
                     './assets/script/main.js'
                 ],
                 dest: './assets/script/build/main.js',
