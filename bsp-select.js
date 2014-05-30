@@ -205,22 +205,9 @@
                 // convert <option> to <li>
 
                 // transfer attributes:
-
                 var _text = $(option).text(),
-                    _value = $(option).attr("value"),
-                    _selected = $(option).attr("selected");
-
-                // for "no value" options
-                if (typeof _value === "undefined") {
-                    _value = _text;
-                }
-
-                // for "selected" options
-                if (typeof _selected !== "undefined") {
-                    _selected = "data-selected='selected'";
-                } else {
-                    _selected = "";
-                }
+                    _value = typeof $(option).attr("value") !== "undefined" ? $(option).attr("value") : _text,
+                    _selected = typeof $(option).attr("selected") !== "undefined" ? "data-selected='selected'" : "";
 
                 // calculate & cache currentSelectionIndex for this dropdown
                 plugin._data(selector, "currentSelectionIndex", Math.max( $(selector).find("."+ _prefix +"custom-menu").find("li[data-selected]").index(), 0 ) );
@@ -306,18 +293,20 @@
 
                 var _index = plugin._data(selector, "currentSelectionIndex");
 
+                var _max = plugin.option(selector, "maxItems");
+
                 var _prefix = plugin.option(selector, "prefix");
 
                 $(selector).find("li").removeAttr("data-selected");
                 $(selector).find("li").eq( _index ).attr("data-selected", "selected");
 
                 // handle options that are not visible in the dropdown
-                if (plugin.option(selector, "maxItems") !== null) {
+                if (_max !== null) {
 
                     var adjust_top;
 
-                    if (_index + 1 > plugin.option(selector, "maxItems")) {
-                        adjust_top = (_index + 1 - plugin.option(selector, "maxItems")) * plugin._data(selector, "item_height");
+                    if (_index + 1 > _max) {
+                        adjust_top = (_index + 1 - _max) * plugin._data(selector, "item_height");
                         adjust_top = "-" + adjust_top + "px";
                     } else {
                         adjust_top = "0px";
