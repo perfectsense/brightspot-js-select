@@ -272,9 +272,7 @@
             });
 
             /*
-            **  examples of helper functions ...
-            **
-            **  IMPORTANT: .add, .addOptions, .replaceOptions don't work yet & are intended to be public method eventually
+            **  examples of 'helper functions' ... note: they're public
             **
             */
 
@@ -361,7 +359,7 @@
                 var plugin = this;
 
                 // this is the only call that doesn't need an instance specific
-                // selector since we're working against all instances
+                // selector since we're closing all instances
                 var selector = ".bsp-select-item";
 
                 $(selector)
@@ -416,6 +414,32 @@
                 }
 
             };
+
+        },
+
+        '_all': function(selector) {
+
+            /*
+            **  _each finished (or was skipped if not defined as part of this plugin)
+            **
+            **  _all runs once per each instantiation, e.g. bsp_select.live( document, "some jQuery selector", { ... some options ... } );
+            **
+            **  it's similar to _init but trails iterative tasks executed in _each
+            **
+            **  when _all completes, thaaat's all
+            **
+            **  ... but keep in mind by using .live anytime that "some jQuery selector" is inserted in to the DOM
+            **  the cycle of _init, _each, _all is kicked off again
+            */
+
+            var plugin = this;
+
+            var DEBUG = plugin.option(selector, 'debug');
+
+            /*
+            **  examples of public methods
+            **
+            */
 
             plugin.add = function(_text, _value, selector){
 
@@ -473,25 +497,6 @@
                 plugin.addOptions(options_element_map, selector);
 
             };
-
-        },
-
-        '_all': function(selector) {
-
-            /*
-            **  _each finished (or was skipped if not defined as part of this plugin)
-            **
-            **  _all runs once per each instantiation, e.g. bsp_select.live( document, "some jQuery selector", { ... some options ... } );
-            **
-            **  it's similar to _init but trails iterative tasks executed in _each
-            **
-            **  when _all completes, thaaat's all
-            **
-            **  ... but keep in mind by using .live anytime that "some jQuery selector" is inserted in to the DOM
-            **  the cycle of _init, _each, _all is kicked off again
-            */
-
-            // _all doesn't get used by this plugin (yet -- maybe)!!
 
         }
 

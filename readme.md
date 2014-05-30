@@ -54,15 +54,11 @@ The sample files & default options use classes that correspond to Font Awesome.
 
 ## Methods
 
-[[IMPORTANT: these are future features / works in progress]]
-
 ### .add
 
 There are also some public methods you can access, for example to be able to add arbitrary &lt;option&gt;s, use the `.add` method:
 
-    var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
-
-    $customSelectAdderDemo.add( "some text", "some-value" );
+    bsp_utils.add( "some text", "some-value", ".some-selector" );
 
 (The value argument, the 2nd one, is optional, just like the value attribute on an &lt;option&gt; element.)
 
@@ -70,16 +66,15 @@ There are also some public methods you can access, for example to be able to add
 
 To be able to replace all &lt;option&gt;s, use the `.replaceOptions` method:
 
-    var $customSelectReplaceDemo = $(".custom-select-replace-demo").customSelect().data("customSelect");
-
-    $customSelectReplaceDemo.replaceOptions(
+    bsp_utils.replaceOptions(
         [{
             "_value" : "America/Puerto_Rico",
             "_text"  : "Puerto Rico (Atlantic)"
         }, {
             "_value" : "Pacific/Honolulu",
             "_text"  : "Honolulu (Hawaii)"
-        }]
+        }],
+        ".some-selector"
     );
 
 ### .addOptions
