@@ -1,7 +1,7 @@
 
-# custom-select bsp utility
+# bsp_select bsp utility
 
-... `custom-select.html` is a working demo; so look at that, first.
+... `index.html` is a working demo; so look at that, first.
 
 CSS provided has optional rules & required rules (this needs to be specified).
 
@@ -13,13 +13,24 @@ Look at the HTML & CSS & JS ...
 
 This is the most basic implementation:
 
-    $(".custom-select").customSelect();
+    bsp_select.live(document, ".custom-select");
 
-Modifying the look & feel just requires updating some vars in custom-select.less
+Where, independently, you might attach change event(s) to your <&lt;select&gt;, for example:
+
+    $(document).on("change", "select", function() {
+        console.log( "this select changed:", $(this).val() );
+    });
+
+... that change event will get copied to the custom ui.
+
+Modifying the look & feel just requires updating some vars in bsp-select.less (or maybe bsp-select.css).
+
+Other dependencies include jQuery 1.7 or greater & the core bsp-utils.js file (see the bower.json file included).
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-## Options
+## Options (where these are the defaults)
 
         {
             debug: false,
@@ -37,11 +48,13 @@ Modifying the look & feel just requires updating some vars in custom-select.less
 
 "maxItems" is useful for constraining the dropdown's height when there are a ton of &lt;option&gt; elements, this requires applying a `height` or `min-height` to &lt;option&gt; elements in the CSS/Less.
 
-The sample files use classes that correspond to Font Awesome.
+The sample files & default options use classes that correspond to Font Awesome.
 
 ------------------------------------------------------------------------------------------------------------------------------
 
 ## Methods
+
+[[IMPORTANT: these are future features / works in progress]]
 
 ### .add
 
@@ -50,7 +63,7 @@ There are also some public methods you can access, for example to be able to add
     var $customSelectAdderDemo = $(".custom-select-adder-demo").customSelect().data("customSelect");
 
     $customSelectAdderDemo.add( "some text", "some-value" );
-    
+
 (The value argument, the 2nd one, is optional, just like the value attribute on an &lt;option&gt; element.)
 
 ### .replaceOptions
