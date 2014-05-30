@@ -445,6 +445,12 @@
 
                 var plugin = this;
 
+                // only 2 args were passed in ...
+                if (typeof selector === "undefined") {
+                    selector = _value;
+                    _value = _text;
+                }
+
                 var _prefix = plugin.option(selector, "prefix");
 
                 // for "no value" options
