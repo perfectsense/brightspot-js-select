@@ -73,7 +73,7 @@
 
                     var key = event.which;
 
-                    var selector = window.bsp_select_currently_opened;
+                    var selector = window.bsp_select_cache.selector_currently_opened;
 
                     if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
 
@@ -117,7 +117,9 @@
             /*
             **  _install finished (or was skipped if not defined as part of this plugin)
             **
-            **  _init runs once per each instantiation, e.g. bsp_select.live( document, "some jQuery selector", { ... some options ... } );
+            **  _init runs once per each instantiation, e.g.
+            **
+            **      bsp_select.live( document, "some jQuery selector", { ... some options ... } );
             **
             **  when _init completes _each is triggered
             */
@@ -148,16 +150,14 @@
 
             // this is what transfers clicking on <select> to the custom UI
             plugin._on(context, 'focus mousedown', selector + " select", function() {
-                plugin.toggleCustomSelect(selector);
+                var selectorIndex = $(this).closest(selector).attr("data-bsp-select-index");
+                plugin.toggleCustomSelect(selector, selectorIndex);
             });
 
-            // the map is just a cache for global things
-            // like which menu is open right now & reference list of all menus
-            window.bsp_select_map = {
-
-                bsp_select_currently_opened: null
-
-
+            // the map is just a cache for global things like which menu is open right now
+            window.bsp_select_cache = {
+                selector_currently_opened: null,
+                selector_instance_count: 0
             };
 
         },
@@ -178,8 +178,13 @@
 
             var DEBUG = plugin.option(selector, 'debug');
 
+            // adds convenience data attr & className to track instances of selector
+            var bsp_select_index = window.bsp_select_cache.selector_instance_count;
+            $(selector).attr("data-bsp-select-index", bsp_select_index).addClass("bsp-select-item-"+bsp_select_index);
+            window.bsp_select_cache.selector_instance_count++;
+
             /*
-            **  IMPORTANT:
+            **  Note:
             **
             **  plugin._data is a wrapper for jQuery.data
             **
@@ -192,8 +197,15 @@
 
             var _prefix = plugin.option(selector, "prefix");
 
+            /*
+            **  Note:
+            **
+            **  plugin.option(selector) returns the whole instance specific options object
+            **
+            */
+
             if (DEBUG) {
-                console.log( "_init plugin", plugin, "selector", selector, "window.bsp_select_map", window.bsp_select_map, "options", plugin.option(selector) );
+                console.log( "_init plugin", plugin, "selector", selector, "options", plugin.option(selector) );
             }
 
             // create HTML container for custom UI
@@ -266,12 +278,12 @@
             **
             */
 
-            plugin.not_open = function(selector){
+            plugin.not_open = function(selector, selectorIndex){
 
                 var plugin = this;
 
                 // return true if the select doesn't have either open or openUpward classes
-                return $(selector).hasClass( plugin._data(selector, "_open") ) ? false : true;
+                return $(selector+".bsp-select-item-" + selectorIndex).hasClass( plugin._data(selector, "_open") ) ? false : true;
 
             };
 
@@ -344,7 +356,7 @@
             plugin.closeCustomSelects = function(){
 
                 // register all lists as closed
-                window.bsp_select_map.bsp_select_currently_opened = null;
+                window.bsp_select_cache.selector_currently_opened = null;
 
                 var plugin = this;
 
@@ -360,7 +372,7 @@
 
             };
 
-            plugin.toggleCustomSelect = function(selector){
+            plugin.toggleCustomSelect = function(selector, selectorIndex){
 
                 var plugin = this;
 
@@ -369,7 +381,7 @@
                 event.preventDefault();
 
                 // if the dropdown needs to open
-                if (plugin.not_open(selector)) {
+                if (plugin.not_open(selector, selectorIndex)) {
 
                     // close open dropdowns
                     $(document).trigger("click");
@@ -377,10 +389,10 @@
                     event.stopPropagation();
 
                     // register this list as opened globally
-                    window.bsp_select_map.bsp_select_currently_opened = selector;
+                    window.bsp_select_cache.selector_currently_opened = selector+".bsp-select-item-" + selectorIndex;
 
                     // open this one
-                    $(selector)
+                    $(window.bsp_select_cache.selector_currently_opened)
                         .addClass( plugin._data(selector, "_open") )
                         .removeClass( plugin.option(selector, "icons_open") )
                         .addClass( plugin.option(selector, "icons_close") );
@@ -394,12 +406,12 @@
                 }
 
                 // if the dropdown needs to open upward
-                if ($(selector).hasClass( plugin.option(selector, "openUpwardClassName") ) ) {
+                if ($(window.bsp_select_cache.selector_currently_opened).hasClass( plugin.option(selector, "openUpwardClassName") ) ) {
 
                     // set top to -height
-                    $(selector)
+                    $(window.bsp_select_cache.selector_currently_opened)
                         .find("."+ _prefix +"custom-menu")
-                        .css({"top": "-" + $(selector).find("."+ _prefix +"custom-menu").height() + "px" });
+                        .css({"top": "-" + $(window.bsp_select_cache.selector_currently_opened).find("."+ _prefix +"custom-menu").height() + "px" });
 
                 }
 
