@@ -219,13 +219,14 @@
                 // transfer attributes:
                 var _text = $(option).text(),
                     _value = typeof $(option).attr("value") !== "undefined" ? $(option).attr("value") : _text,
+                    _classes = typeof $(option).attr("data-classes") !== "undefined" ? "class='"+$(option).attr("data-classes")+"'" : "",
                     _selected = typeof $(option).attr("selected") !== "undefined" ? "data-selected='selected'" : "";
 
                 // calculate & cache currentSelectionIndex for this dropdown
                 plugin._data(selector, "currentSelectionIndex", Math.max( $(selector).find("."+ _prefix +"custom-menu").find("li[data-selected]").index(), 0 ) );
 
                 // create & append <li> for current <option>
-                $(selector).find("."+ _prefix +"custom-menu").find("ul").append("<li data-value='"+_value+"' "+_selected+">"+_text+"</li>");
+                $(selector).find("."+ _prefix +"custom-menu").find("ul").append("<li data-value='"+_value+"' "+_selected+" "+_classes+">"+_text+"</li>");
 
             });
 
