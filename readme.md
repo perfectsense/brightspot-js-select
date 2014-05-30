@@ -15,7 +15,7 @@ This is the most basic implementation:
 
     bsp_select.live(document, ".custom-select");
 
-Where, independently, you might attach change event(s) to your <&lt;select&gt;, for example:
+Where, independently, you might attach change event(s) to your &lt;select&gt;, for example:
 
     $(document).on("change", "select", function() {
         console.log( "this select changed:", $(this).val() );
