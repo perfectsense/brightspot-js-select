@@ -33,14 +33,26 @@
 
     <script>
 
+        $(document).on("change", "select", function() {
+            console.log( "this select changed:", $(this).val() );
+        });
+
         $(document).on("ready", function() {
 
-            $("select").on("change", function() {
-                console.log( "this select changed:", $(this).val() );
-            });
-
+            // there are 3+ of these on this page
             bsp_select.live(document, ".custom-select-with-js", {
                 'debug': true
+            });
+
+            // there's just one of these
+            bsp_select.live(document, ".custom-select-states", {
+                "maxItems": 3
+            });
+
+            // there's just one of these, too
+            bsp_select.live(document, ".custom-select-states-upward", {
+                "maxItems": 5,
+                "forceUpward": true
             });
 
         });
@@ -68,21 +80,6 @@
         //     });
 
         // });
-
-        // just for the states demo:
-
-        $(document).on("ready", function() {
-
-            bsp_select.live(document, ".custom-select-states", {
-                "maxItems": 3
-            });
-
-            bsp_select.live(document, ".custom-select-states-upward", {
-                "maxItems": 5,
-                "forceUpward": true
-            });
-
-        });
 
     </script>
 
