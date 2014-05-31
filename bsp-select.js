@@ -91,6 +91,9 @@
 
                         // ESCAPE
                         if (key === 27) {
+
+                            // TODO: this needs to reset the state od the dropdown
+
                             // close select(s)
                             plugin.closeCustomSelects();
                             return false;
@@ -102,6 +105,14 @@
                             plugin.selectOption(selector);
                             // close select(s)
                             plugin.closeCustomSelects();
+                            return false;
+                        }
+
+                        // autosuggest / highlight
+                        // all letters, numbers, hyphen, underscore, space
+                        if (/[a-zA-Z0-9-_ ]/.test(key)) {
+                            var character = String.fromCharCode(key).toLowerCase();
+                            plugin.autoSuggest(character, selector);
                             return false;
                         }
 
@@ -157,7 +168,9 @@
             // the map is just a cache for global things like which menu is open right now
             window.bsp_select_cache = {
                 selector_currently_opened: null,
-                selector_instance_count: 0
+                selector_instance_count: 0,
+
+                suggestion: ""
             };
 
         },
@@ -294,6 +307,9 @@
                     console.log("selectOption", $(selector).find("li[data-selected]"));
                 }
 
+                // if selectOption was the result of autoSuggest reset that
+                window.bsp_select_cache.suggestion = "";
+
                 $(selector).find("li[data-selected]").trigger("click");
 
             };
@@ -352,10 +368,62 @@
 
             };
 
+            plugin.autoSuggest = function(character, selector){
+
+                // append additional characters to the suggestion that's cached globally
+                window.bsp_select_cache.suggestion += character;
+
+                // create a local copy, for conveience
+                var suggestion = window.bsp_select_cache.suggestion;
+
+                // cap the length of a suggestion to 12 characters
+                if (suggestion.length > 12) {
+                    return false;
+                }
+
+                // update String prototype with new method for easy matching
+                if (typeof String.prototype.startsWith != 'function') {
+
+                    // TODO: verify that this is the best version of this method
+                    String.prototype.startsWith = function (str){
+                        return this.indexOf(str) == 0;
+                    };
+                }
+
+                var plugin = this;
+
+                // could just use i i the .each below ...
+                var matchingItemIndex;
+
+                // loop over all the <options> & quit when the suggestion matches
+                // the first set of characters in an option ...
+                $(selector).find("option").each(function(i, item) {
+
+                    var _text = $(item).text(); _text = _text.toLowerCase();
+
+                    if ( _text.startsWith(suggestion) ) {
+
+                        matchingItemIndex = i;
+
+                        plugin._data(selector, "currentSelectionIndex", matchingItemIndex );
+
+                        plugin.highlightOption(selector);
+
+                        return false;
+
+                    }
+
+                });
+
+            };
+
             plugin.closeCustomSelects = function(){
 
                 // register all lists as closed
                 window.bsp_select_cache.selector_currently_opened = null;
+
+                // reset autoSuggest
+                window.bsp_select_cache.suggestion = "";
 
                 var plugin = this;
 
