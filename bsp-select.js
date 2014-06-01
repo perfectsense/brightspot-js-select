@@ -75,43 +75,80 @@
 
                     var selector = window.bsp_select_cache.selector_currently_opened;
 
+                    // check to ensure keydown applies only when a dropdown is open
+                    if (window.bsp_select_cache.selector_currently_opened === "") {
+                        return;
+                    }
+
                     if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
 
                         // UP ARROW
                         if (key === 38) {
-                            plugin.highlightPreviousOption(selector);
+                            plugin.focusOnPreviousOption(selector);
                             return false;
                         }
 
                         // DOWN ARROW
                         if (key === 40) {
-                            plugin.highlightNextOption(selector);
+                            plugin.focusOnNextOption(selector);
                             return false;
                         }
 
                         // ESCAPE
                         if (key === 27) {
 
-                            // TODO: this needs to reset the state od the dropdown
+                            // on escape, focus on the current / most recent selection
+
+                            // reset index to option seen when dropdown opened
+                            plugin._data(selector, "currentSelectionIndex", window.bsp_select_cache.original_option);
+
+                            // scroll back to top of lists
+                            var _prefix = plugin.option(selector, "prefix");
+                            $(selector).find("."+ _prefix +"custom-menu").find("ul").css({"top": "0px" });
+
+                            // re-select current selection
+                            plugin.focusOnOption(selector);
 
                             // close select(s)
                             plugin.closeCustomSelects();
+
                             return false;
                         }
 
                         // ENTER
                         if (key === 13) {
-                            // select highlighted option
+                            // select focused option
                             plugin.selectOption(selector);
                             // close select(s)
                             plugin.closeCustomSelects();
                             return false;
                         }
 
-                        // autosuggest / highlight
+                        // DELETE
+                        if (key === 8) {
+
+                            // delete key shortens suggestion
+
+                            if (window.bsp_select_cache.suggestion.length > 0) {
+
+                                window.bsp_select_cache.suggestion = window.bsp_select_cache.suggestion.slice(0, -1);
+
+                                // console.log("delete", window.bsp_select_cache.suggestion);
+
+                                plugin.autoSuggest(selector);
+
+                            }
+
+                            return false;
+                        }
+
+                        // autosuggest / focusOn
                         // all letters, numbers, hyphen, underscore, space
                         if (/[a-zA-Z0-9-_ ]/.test(key)) {
                             var character = String.fromCharCode(key).toLowerCase();
+
+                            // console.log("new char", character, window.bsp_select_cache.suggestion);
+
                             plugin.autoSuggest(character, selector);
                             return false;
                         }
@@ -167,9 +204,9 @@
 
             // the map is just a cache for global things like which menu is open right now
             window.bsp_select_cache = {
-                selector_currently_opened: null,
+                selector_currently_opened: "",
                 selector_instance_count: 0,
-
+                original_option: "",
                 suggestion: ""
             };
 
@@ -314,7 +351,7 @@
 
             };
 
-            plugin.highlightOption = function(selector){
+            plugin.focusOnOption = function(selector){
 
                 var plugin = this;
 
@@ -344,7 +381,7 @@
 
             };
 
-            plugin.highlightPreviousOption = function(selector){
+            plugin.focusOnPreviousOption = function(selector){
 
                 var plugin = this;
 
@@ -352,11 +389,11 @@
 
                 plugin._data(selector, "currentSelectionIndex", Math.max(_index - 1, 0) );
 
-                plugin.highlightOption(selector);
+                plugin.focusOnOption(selector);
 
             };
 
-            plugin.highlightNextOption = function(selector){
+            plugin.focusOnNextOption = function(selector){
 
                 var plugin = this;
 
@@ -364,14 +401,22 @@
 
                 plugin._data(selector, "currentSelectionIndex", Math.min(_index + 1, $(selector).find("li").length - 1) );
 
-                plugin.highlightOption(selector);
+                plugin.focusOnOption(selector);
 
             };
 
             plugin.autoSuggest = function(character, selector){
 
-                // append additional characters to the suggestion that's cached globally
-                window.bsp_select_cache.suggestion += character;
+                if (typeof selector === "undefined") {
+
+                    character = selector;
+
+                } else {
+
+                    // append additional characters to the suggestion that's cached globally
+                    window.bsp_select_cache.suggestion += character;
+
+                }
 
                 // create a local copy, for conveience
                 var suggestion = window.bsp_select_cache.suggestion;
@@ -382,7 +427,7 @@
                 }
 
                 // update String prototype with new method for easy matching
-                if (typeof String.prototype.startsWith != 'function') {
+                if (typeof String.prototype.startsWith !== 'function') {
 
                     // TODO: verify that this is the best version of this method
                     String.prototype.startsWith = function (str){
@@ -392,7 +437,7 @@
 
                 var plugin = this;
 
-                // could just use i i the .each below ...
+                // could just use i in the .each below ...
                 var matchingItemIndex;
 
                 // loop over all the <options> & quit when the suggestion matches
@@ -407,7 +452,7 @@
 
                         plugin._data(selector, "currentSelectionIndex", matchingItemIndex );
 
-                        plugin.highlightOption(selector);
+                        plugin.focusOnOption(selector);
 
                         return false;
 
@@ -457,6 +502,9 @@
 
                     // register this list as opened globally
                     window.bsp_select_cache.selector_currently_opened = selector+".bsp-select-item-" + selectorIndex;
+
+                    // store the original option's index selected so that escape can restore this
+                    window.bsp_select_cache.original_option = plugin._data(selector, "currentSelectionIndex");
 
                     // open this one
                     $(window.bsp_select_cache.selector_currently_opened)
