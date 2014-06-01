@@ -133,7 +133,7 @@
 
                                 window.bsp_select_cache.suggestion = window.bsp_select_cache.suggestion.slice(0, -1);
 
-                                // console.log("delete", window.bsp_select_cache.suggestion);
+                                plugin.highlightMatchingOptions(selector);
 
                                 plugin.autoSuggest(selector);
 
@@ -146,9 +146,6 @@
                         // all letters, numbers, hyphen, underscore, space
                         if (/[a-zA-Z0-9-_ ]/.test(key)) {
                             var character = String.fromCharCode(key).toLowerCase();
-
-                            // console.log("new char", character, window.bsp_select_cache.suggestion);
-
                             plugin.autoSuggest(character, selector);
                             return false;
                         }
@@ -157,6 +154,16 @@
 
                     return true;
                 });
+
+            // update String prototype with new method for easy matching
+            // used by highlight & autosuggest functionality
+            if (typeof String.prototype.startsWith !== 'function') {
+
+                // TODO: verify that this is the best version of this method
+                String.prototype.startsWith = function (str){
+                    return this.indexOf(str) == 0;
+                };
+            }
 
         },
 
@@ -361,6 +368,8 @@
 
                 var _prefix = plugin.option(selector, "prefix");
 
+                plugin.unhighlightMatchingOptions(selector);
+
                 $(selector).find("li").removeAttr("data-selected");
                 $(selector).find("li").eq( _index ).attr("data-selected", "selected");
 
@@ -405,12 +414,51 @@
 
             };
 
+            plugin.highlightMatchingOptions = function(selector){
+
+                var plugin = this;
+
+                var suggestion = window.bsp_select_cache.suggestion;
+
+                $(selector).find("li").each(function() {
+
+                    var $this = $(this);
+
+                    var _text = $this.text();
+
+                    var _match = _text.substr(0, suggestion.length);
+
+                    if (_text.toLowerCase().startsWith( suggestion ) ) {
+
+                        _text = _text.replace( _match, "<u>"+ _match +"</u>" );
+
+                        $this.html( _text );
+
+                    }
+
+                });
+
+            };
+
+            plugin.unhighlightMatchingOptions = function(selector){
+
+                var plugin = this;
+
+                $(selector).find("li").each(function() {
+                    // strip html
+                    $(this).html( $(this).text() );
+                });
+
+            };
+
             plugin.autoSuggest = function(character, selector){
 
+                // for delete key
                 if (typeof selector === "undefined") {
 
                     character = selector;
 
+                // for 'normal' autoSuggest w/ new characters being added
                 } else {
 
                     // append additional characters to the suggestion that's cached globally
@@ -426,15 +474,6 @@
                     return false;
                 }
 
-                // update String prototype with new method for easy matching
-                if (typeof String.prototype.startsWith !== 'function') {
-
-                    // TODO: verify that this is the best version of this method
-                    String.prototype.startsWith = function (str){
-                        return this.indexOf(str) == 0;
-                    };
-                }
-
                 var plugin = this;
 
                 // could just use i in the .each below ...
@@ -442,17 +481,19 @@
 
                 // loop over all the <options> & quit when the suggestion matches
                 // the first set of characters in an option ...
-                $(selector).find("option").each(function(i, item) {
+                $(selector).find("li").each(function(i) {
 
-                    var _text = $(item).text(); _text = _text.toLowerCase();
+                    var _text = $(this).text();
 
-                    if ( _text.startsWith(suggestion) ) {
+                    if ( _text.toLowerCase().startsWith(suggestion) ) {
 
                         matchingItemIndex = i;
 
                         plugin._data(selector, "currentSelectionIndex", matchingItemIndex );
 
                         plugin.focusOnOption(selector);
+
+                        plugin.highlightMatchingOptions(selector);
 
                         return false;
 
@@ -491,6 +532,10 @@
                 var _prefix = plugin.option(selector, "prefix");
 
                 event.preventDefault();
+
+                // reset autoSuggest
+                window.bsp_select_cache.suggestion = "";
+                plugin.unhighlightMatchingOptions(selector);
 
                 // if the dropdown needs to open
                 if (plugin.not_open(selector, selectorIndex)) {
