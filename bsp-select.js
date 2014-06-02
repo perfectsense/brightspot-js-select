@@ -142,7 +142,7 @@
                             return false;
                         }
 
-                        // autosuggest / focusOn
+                        // autosuggest / higlight
                         // all letters, numbers, hyphen, underscore, space
                         if (/[a-zA-Z0-9-_ ]/.test(key)) {
                             var character = String.fromCharCode(key).toLowerCase();
