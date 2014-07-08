@@ -302,7 +302,7 @@
                 plugin._data(selector, "restricted_height", plugin.option(selector, "maxItems") * plugin._data(selector, "item_height") );
 
                 // apply restricted height
-                $(selector).find("."+ _prefix +"custom-menu").height( plugin._data(selector, "restricted_height") + "px").css({"overflow-y":"scroll"});
+                $(selector).find("."+ _prefix +"custom-menu").outerHeight( plugin._data(selector, "restricted_height") + "px").css({"overflow-y":"scroll"});
             }
 
             // add click events to custom UI
