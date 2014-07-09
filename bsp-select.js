@@ -266,9 +266,6 @@
             }
 
             // create HTML container for custom UI
-
-            console.log("prefix", _prefix);
-
             $(selector).append("<div class='"+ _prefix +"-custom-menu'><ul></ul></div>");
 
             // get all the <option>s
