@@ -34,7 +34,7 @@
 
         '_defaultOptions': {
             'debug': false,
-            'prefix': "custom-select-",
+            'prefix': "custom-select",
             'icons_open':  "fa-chevron-down",
             'icons_close': "fa-chevron-up",
             'maxItems': null,
@@ -104,7 +104,7 @@
 
                             // scroll back to top of lists
                             var _prefix = plugin.option(selector, "prefix");
-                            $(selector).find("."+ _prefix +"custom-menu").find("ul").css({"top": "0px" });
+                            $(selector).find("."+ _prefix +"-custom-menu").find("ul").css({"top": "0px" });
 
                             // re-select current selection
                             plugin.focusOnOption(selector);
@@ -266,7 +266,10 @@
             }
 
             // create HTML container for custom UI
-            $(selector).append("<div class='"+ _prefix +"custom-menu'><ul></ul></div>");
+
+            console.log("prefix", _prefix);
+
+            $(selector).append("<div class='"+ _prefix +"-custom-menu'><ul></ul></div>");
 
             // get all the <option>s
             $(selector).find("option").each(function(i, option) {
@@ -280,29 +283,29 @@
                     _selected = typeof $(option).attr("selected") !== "undefined" ? "data-selected='selected'" : "";
 
                 // calculate & cache currentSelectionIndex for this dropdown
-                plugin._data(selector, "currentSelectionIndex", Math.max( $(selector).find("."+ _prefix +"custom-menu").find("li[data-selected]").index(), 0 ) );
+                plugin._data(selector, "currentSelectionIndex", Math.max( $(selector).find("."+ _prefix +"-custom-menu").find("li[data-selected]").index(), 0 ) );
 
                 // create & append <li> for current <option>
-                $(selector).find("."+ _prefix +"custom-menu").find("ul").append("<li data-value='"+_value+"' "+_selected+" "+_classes+">"+_text+"</li>");
+                $(selector).find("."+ _prefix +"-custom-menu").find("ul").append("<li data-value='"+_value+"' "+_selected+" "+_classes+">"+_text+"</li>");
 
             });
 
             // if there wasn't a selected="selected" option create set those attribute on 1st <li>
             if (plugin._data(selector, "currentSelectionIndex") === 0) {
-                $(selector).find("."+ _prefix +"custom-menu").find("li").eq(0).attr("data-selected", "selected");
+                $(selector).find("."+ _prefix +"-custom-menu").find("li").eq(0).attr("data-selected", "selected");
             }
 
             // for dropdowns that are constrained to a certain height base on maxItems to display:
             if (plugin.option(selector, "maxItems")) {
 
                 // calculate <li> height
-                plugin._data(selector, "item_height", $(selector).find("."+ _prefix +"custom-menu").find("li").outerHeight() );
+                plugin._data(selector, "item_height", $(selector).find("."+ _prefix +"-custom-menu").find("li").outerHeight() );
 
                 // calculate overall "allowed height": (maxItems * item_height)
                 plugin._data(selector, "restricted_height", plugin.option(selector, "maxItems") * plugin._data(selector, "item_height") );
 
                 // apply restricted height
-                $(selector).find("."+ _prefix +"custom-menu").outerHeight( plugin._data(selector, "restricted_height") + "px").css({"overflow-y":"scroll"});
+                $(selector).find("."+ _prefix +"-custom-menu").outerHeight( plugin._data(selector, "restricted_height") + "px").css({"overflow-y":"scroll"});
             }
 
             // add click events to custom UI
@@ -311,14 +314,14 @@
                 var $menu_item = $(this);
 
                 // update data-selected
-                $(selector).find("."+ _prefix +"custom-menu").find("li").removeAttr("data-selected");
+                $(selector).find("."+ _prefix +"-custom-menu").find("li").removeAttr("data-selected");
                 $menu_item.attr("data-selected", "selected");
 
                 // set original select's value & trigger change event:
                 $(selector).find("select").val( $menu_item.data("value") ).attr("selected","selected").trigger("change");
 
                 // track index of currently selected item
-                plugin._data(selector, "currentSelectionIndex", $(selector).find("."+ _prefix +"custom-menu").find("li[data-selected]").index() );
+                plugin._data(selector, "currentSelectionIndex", $(selector).find("."+ _prefix +"-custom-menu").find("li[data-selected]").index() );
 
                 // after a selection close the dropdown
                 plugin.closeCustomSelects();
@@ -385,7 +388,7 @@
                         adjust_top = "0px";
                     }
 
-                    $(selector).find("."+ _prefix +"custom-menu").find("ul").css({"top": adjust_top });
+                    $(selector).find("."+ _prefix +"-custom-menu").find("ul").css({"top": adjust_top });
                 }
 
             };
@@ -570,8 +573,8 @@
 
                     // set top to -height
                     $(window.bsp_select_cache.selector_currently_opened)
-                        .find("."+ _prefix +"custom-menu")
-                        .css({"top": "-" + $(window.bsp_select_cache.selector_currently_opened).find("."+ _prefix +"custom-menu").height() + "px" });
+                        .find("."+ _prefix +"-custom-menu")
+                        .css({"top": "-" + $(window.bsp_select_cache.selector_currently_opened).find("."+ _prefix +"-custom-menu").height() + "px" });
 
                 }
 
@@ -620,11 +623,11 @@
                     _value = _text;
                 }
 
-                $(selector).find("."+ _prefix +"custom-menu")
+                $(selector).find("."+ _prefix +"-custom-menu")
                     .find("ul")
                     .append("<li data-value='"+_value+"'>"+_text+"</li>");
 
-                $(selector).find("."+ _prefix +"custom-menu")
+                $(selector).find("."+ _prefix +"-custom-menu")
                     .find("li[data-value='"+_value+"']")
                     .on("click", function() {
 
@@ -659,7 +662,7 @@
 
                 var _prefix = plugin.option(selector, "prefix");
 
-                $(selector).find("."+ _prefix +"custom-menu").find("ul").empty();
+                $(selector).find("."+ _prefix +"-custom-menu").find("ul").empty();
                 $(selector).find("select").empty();
 
                 plugin.addOptions(options_element_map, selector);
