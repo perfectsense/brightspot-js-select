@@ -206,9 +206,9 @@
             });
 
             // this is what transfers clicking on <select> to the custom UI
-            plugin._on(context, 'focus mousedown', selector + " select", function() {
+            plugin._on(context, 'focus mousedown', selector + " select", function(event) {
                 var selectorIndex = $(this).closest(selector).attr("data-bsp-select-index");
-                plugin.toggleCustomSelect(selector, selectorIndex);
+                plugin.toggleCustomSelect(event, selector, selectorIndex);
             });
 
             // the map is just a cache for global things like which menu is open right now
@@ -527,7 +527,7 @@
 
             };
 
-            plugin.toggleCustomSelect = function(selector, selectorIndex){
+            plugin.toggleCustomSelect = function(event, selector, selectorIndex){
 
                 var plugin = this;
 
