@@ -561,7 +561,10 @@
                 } else {
 
                     // close open dropdowns
-                    $(document).trigger("click");
+                    $(window.bsp_select_cache.selector_currently_opened)
+                        .removeClass( plugin._data(selector, "_open") )
+                        .addClass( plugin.option(selector, "icons_open") )
+                        .removeClass( plugin.option(selector, "icons_close") );
 
                 }
 
