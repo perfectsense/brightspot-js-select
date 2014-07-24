@@ -76,7 +76,7 @@
                     var selector = window.bsp_select_cache.selector_currently_opened;
 
                     // check to ensure keydown applies only when a dropdown is open
-                    if (selector === "" || selector === null) {
+                    if (window.bsp_select_cache.selector_currently_opened === "") {
                         return;
                     }
 
@@ -142,19 +142,17 @@
                             return false;
                         }
 
+                        // autosuggest / higlight
+                        // all letters, numbers, hyphen, underscore, space
+                        if (/[a-zA-Z0-9-_ ]/.test(key)) {
+                            var character = String.fromCharCode(key).toLowerCase();
+                            plugin.autoSuggest(character, selector);
+                            return false;
+                        }
+
                     }
-                    // else {
 
-                    //     // autosuggest / higlight
-                    //     // all letters, numbers, hyphen, underscore, space
-                    //     if (/[a-zA-Z0-9-_ ]/.test(key)) {
-                    //         var character = String.fromCharCode(key).toLowerCase();
-                    //         plugin.autoSuggest(character, selector);
-                    //         //return false;
-                    //     }
-
-                    // }
-
+                    return true;
                 });
 
             // update String prototype with new method for easy matching
