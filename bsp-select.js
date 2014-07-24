@@ -76,7 +76,7 @@
                     var selector = window.bsp_select_cache.selector_currently_opened;
 
                     // check to ensure keydown applies only when a dropdown is open
-                    if (window.bsp_select_cache.selector_currently_opened === "") {
+                    if (selector === "" || selector === null) {
                         return;
                     }
 
@@ -370,8 +370,8 @@
 
                 plugin.unhighlightMatchingOptions(selector);
 
-                $(selector).find("li").removeAttr("data-selected");
-                $(selector).find("li").eq( _index ).attr("data-selected", "selected");
+                $(selector).find("li").removeClass("selected").removeAttr("data-selected");
+                $(selector).find("li").eq( _index ).addClass("selected").attr("data-selected", "selected");
 
                 // handle options that are not visible in the dropdown
                 if (_max !== null) {
