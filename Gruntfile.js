@@ -106,7 +106,7 @@ module.exports = function (grunt) {
                 tasks: ['less'],
             },
             js: {
-                files: ['assets/script/*/*.js'],
+                files: ['assets/script/*/*.js', 'bsp-select.js'],
                 tasks: ['concat', 'uglify'],
             }
         },
