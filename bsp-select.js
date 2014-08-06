@@ -186,6 +186,11 @@
                 return false;
             }
 
+            // skip mobile browsers using these scenarios
+            if ($("html").hasClass("mobile")) {
+                return false;
+            }
+
             // skip IE8 & older, this still looks the same
             // until you click at which point upu see the default
             // browser select menu
