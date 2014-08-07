@@ -58,6 +58,14 @@
             **  when _install completes _init is triggered
             */
 
+            // the map is just a cache for global things like which menu is open right now
+            window.bsp_select_cache = {
+                selector_currently_opened: "",
+                selector_instance_count: 0,
+                original_option: "",
+                suggestion: ""
+            };
+
             var plugin = this;
 
             // document event bindings
@@ -213,14 +221,6 @@
                 var selectorIndex = $(this).closest(selector).attr("data-bsp-select-index");
                 plugin.toggleCustomSelect(event, selector, selectorIndex);
             });
-
-            // the map is just a cache for global things like which menu is open right now
-            window.bsp_select_cache = {
-                selector_currently_opened: "",
-                selector_instance_count: 0,
-                original_option: "",
-                suggestion: ""
-            };
 
         },
 
