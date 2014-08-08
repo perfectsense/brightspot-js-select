@@ -284,10 +284,12 @@
                     _classes = typeof $(option).attr("data-classes") !== "undefined" ? "class='"+$(option).attr("data-classes")+"'" : "",
                     _selected = typeof $(option).attr("selected") !== "undefined" ? "data-selected='selected'" : "";
 
-                var _selectedValue = (_selected === "") ? 0 : i;
+                if (_selected !== "") {
 
-                // calculate & cache currentSelectionIndex for this dropdown
-                plugin._data(selector, "currentSelectionIndex", _selectedValue );
+                    // calculate & cache currentSelectionIndex for this dropdown
+                    plugin._data(selector, "currentSelectionIndex", i );
+
+                }
 
                 // create & append <li> for current <option>
                 $(selector).find("."+ _prefix +"-custom-menu").find("ul").append("<li data-value='"+_value+"' "+_selected+" "+_classes+">"+_text+"</li>");
