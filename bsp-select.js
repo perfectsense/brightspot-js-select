@@ -66,103 +66,6 @@
                 suggestion: ""
             };
 
-            var plugin = this;
-
-            // document event bindings
-            //     click ---- closes all open selects
-            //     keydown -- maps keyboard shortcuts
-            $(document)
-                .on("click", function() {
-
-                    plugin.closeCustomSelects();
-
-                })
-                .on("keydown", function(event) {
-
-                    var key = event.which;
-
-                    var selector = window.bsp_select_cache.selector_currently_opened;
-
-                    // check to ensure keydown applies only when a dropdown is open
-                    if (selector === "" || selector === null) {
-                        return;
-                    }
-
-                    if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
-
-                        // UP ARROW
-                        if (key === 38) {
-                            plugin.focusOnPreviousOption(selector);
-                            return false;
-                        }
-
-                        // DOWN ARROW
-                        if (key === 40) {
-                            plugin.focusOnNextOption(selector);
-                            return false;
-                        }
-
-                        // ESCAPE
-                        if (key === 27) {
-
-                            // on escape, focus on the current / most recent selection
-
-                            // reset index to option seen when dropdown opened
-                            plugin._data(selector, "currentSelectionIndex", window.bsp_select_cache.original_option);
-
-                            // scroll back to top of lists
-                            var _prefix = plugin.option(selector, "prefix");
-                            $(selector).find("."+ _prefix +"-custom-menu").find("ul").css({"top": "0px" });
-
-                            // re-select current selection
-                            plugin.focusOnOption(selector);
-
-                            // close select(s)
-                            plugin.closeCustomSelects();
-
-                            return false;
-                        }
-
-                        // ENTER
-                        if (key === 13) {
-                            // select focused option
-                            plugin.selectOption(selector);
-                            // close select(s)
-                            plugin.closeCustomSelects();
-                            return false;
-                        }
-
-                        // DELETE
-                        if (key === 8) {
-
-                            // delete key shortens suggestion
-
-                            if (window.bsp_select_cache.suggestion.length > 0) {
-
-                                window.bsp_select_cache.suggestion = window.bsp_select_cache.suggestion.slice(0, -1);
-
-                                plugin.highlightMatchingOptions(selector);
-
-                                plugin.autoSuggest(selector);
-
-                            }
-
-                            return false;
-                        }
-
-                        // autosuggest / higlight
-                        // all letters, numbers, hyphen, underscore, space
-                        if (/[a-zA-Z0-9-_ ]/.test(key)) {
-                            var character = String.fromCharCode(key).toLowerCase();
-                            plugin.autoSuggest(character, selector);
-                            return false;
-                        }
-
-                    }
-
-                    return true;
-                });
-
             // update String prototype with new method for easy matching
             // used by highlight & autosuggest functionality
             if (typeof String.prototype.startsWith !== 'function') {
@@ -607,6 +510,101 @@
             */
 
             var plugin = this;
+
+            // document event bindings
+            //     click ---- closes all open selects
+            //     keydown -- maps keyboard shortcuts
+            $(document)
+                .on("click", function() {
+
+                    plugin.closeCustomSelects();
+
+                })
+                .on("keydown", function(event) {
+
+                    var key = event.which;
+
+                    var selector = window.bsp_select_cache.selector_currently_opened;
+
+                    // check to ensure keydown applies only when a dropdown is open
+                    if (selector === "" || selector === null) {
+                        return;
+                    }
+
+                    if (!(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) {
+
+                        // UP ARROW
+                        if (key === 38) {
+                            plugin.focusOnPreviousOption(selector);
+                            return false;
+                        }
+
+                        // DOWN ARROW
+                        if (key === 40) {
+                            plugin.focusOnNextOption(selector);
+                            return false;
+                        }
+
+                        // ESCAPE
+                        if (key === 27) {
+
+                            // on escape, focus on the current / most recent selection
+
+                            // reset index to option seen when dropdown opened
+                            plugin._data(selector, "currentSelectionIndex", window.bsp_select_cache.original_option);
+
+                            // scroll back to top of lists
+                            var _prefix = plugin.option(selector, "prefix");
+                            $(selector).find("."+ _prefix +"-custom-menu").find("ul").css({"top": "0px" });
+
+                            // re-select current selection
+                            plugin.focusOnOption(selector);
+
+                            // close select(s)
+                            plugin.closeCustomSelects();
+
+                            return false;
+                        }
+
+                        // ENTER
+                        if (key === 13) {
+                            // select focused option
+                            plugin.selectOption(selector);
+                            // close select(s)
+                            plugin.closeCustomSelects();
+                            return false;
+                        }
+
+                        // DELETE
+                        if (key === 8) {
+
+                            // delete key shortens suggestion
+
+                            if (window.bsp_select_cache.suggestion.length > 0) {
+
+                                window.bsp_select_cache.suggestion = window.bsp_select_cache.suggestion.slice(0, -1);
+
+                                plugin.highlightMatchingOptions(selector);
+
+                                plugin.autoSuggest(selector);
+
+                            }
+
+                            return false;
+                        }
+
+                        // autosuggest / higlight
+                        // all letters, numbers, hyphen, underscore, space
+                        if (/[a-zA-Z0-9-_ ]/.test(key)) {
+                            var character = String.fromCharCode(key).toLowerCase();
+                            plugin.autoSuggest(character, selector);
+                            return false;
+                        }
+
+                    }
+
+                    return true;
+                });
 
             var DEBUG = plugin.option(selector, 'debug');
 
